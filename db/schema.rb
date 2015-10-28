@@ -14,103 +14,107 @@
 ActiveRecord::Schema.define(version: 20150914103801) do
 
   create_table "alerts", force: :cascade do |t|
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.integer  "alerts_kind"
-    t.boolean  "fixed",                    default: false
-    t.integer  "lot_id"
-    t.float    "max_yield"
-    t.float    "min_yield"
-    t.string   "max_element"
-    t.string   "min_element"
-    t.float    "region_1_yield"
-    t.float    "region_2_yield"
-    t.integer  "detected_serial",          default: 0
-    t.integer  "continuously_fail_number", default: 0
-    t.integer  "continuously_fail_bin",    default: 0
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.integer  "alerts_kind",              limit: 4
+    t.boolean  "fixed",                    limit: 1,   default: false
+    t.integer  "lot_id",                   limit: 4
+    t.float    "max_yield",                limit: 24
+    t.float    "min_yield",                limit: 24
+    t.string   "max_element",              limit: 255
+    t.string   "min_element",              limit: 255
+    t.float    "region_1_yield",           limit: 24
+    t.float    "region_2_yield",           limit: 24
+    t.integer  "detected_serial",          limit: 4,   default: 0
+    t.integer  "continuously_fail_number", limit: 4,   default: 0
+    t.integer  "continuously_fail_bin",    limit: 4,   default: 0
   end
 
-  add_index "alerts", ["lot_id"], name: "index_alerts_on_lot_id"
+  add_index "alerts", ["lot_id"], name: "index_alerts_on_lot_id", using: :btree
 
   create_table "data", force: :cascade do |t|
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "bin"
-    t.integer  "serial",     default: 0
-    t.integer  "lot_id"
-    t.integer  "site"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "bin",        limit: 4
+    t.integer  "serial",     limit: 4, default: 0
+    t.integer  "lot_id",     limit: 4
+    t.integer  "site",       limit: 4
   end
 
-  add_index "data", ["lot_id"], name: "index_data_on_lot_id"
+  add_index "data", ["lot_id"], name: "index_data_on_lot_id", using: :btree
 
   create_table "devices", force: :cascade do |t|
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.string   "name"
-    t.boolean  "site_difference_detect_enable"
-    t.integer  "site_difference_detect_window"
-    t.boolean  "continuously_failure_detect_enable"
-    t.integer  "continuously_failure_detect_threshold"
-    t.boolean  "time_variance_detect_enable"
-    t.integer  "time_variance_detect_window_small"
-    t.integer  "time_variance_detect_window_large"
-    t.float    "time_variance_detect_threshold"
-    t.boolean  "different_tester_variance_detect_enable"
-    t.integer  "different_tester_variance_detect_window"
-    t.float    "different_tester_variance_detect_threshold"
-    t.decimal  "site_difference_detect_threshold"
+    t.datetime "created_at",                                                            null: false
+    t.datetime "updated_at",                                                            null: false
+    t.string   "name",                                       limit: 255
+    t.boolean  "site_difference_detect_enable",              limit: 1
+    t.integer  "site_difference_detect_window",              limit: 4
+    t.boolean  "continuously_failure_detect_enable",         limit: 1
+    t.integer  "continuously_failure_detect_threshold",      limit: 4
+    t.boolean  "time_variance_detect_enable",                limit: 1
+    t.integer  "time_variance_detect_window_small",          limit: 4
+    t.integer  "time_variance_detect_window_large",          limit: 4
+    t.float    "time_variance_detect_threshold",             limit: 24
+    t.boolean  "different_tester_variance_detect_enable",    limit: 1
+    t.integer  "different_tester_variance_detect_window",    limit: 4
+    t.float    "different_tester_variance_detect_threshold", limit: 24
+    t.decimal  "site_difference_detect_threshold",                       precision: 10
   end
 
   create_table "lots", force: :cascade do |t|
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "name"
-    t.string   "tester"
-    t.integer  "device"
-    t.integer  "total_device_count"
-    t.integer  "site_number"
-    t.float    "basic_yield"
-    t.integer  "cliff_number"
-    t.float    "first_region_yield"
-    t.float    "second_region_yield"
-    t.integer  "generate_mode"
-    t.integer  "device_id"
-    t.boolean  "site_difference_detected",           default: false
-    t.boolean  "continuously_failure_detected",      default: false
-    t.boolean  "time_variance_detected",             default: false
-    t.boolean  "different_tester_variance_detected", default: false
+    t.datetime "created_at",                                                     null: false
+    t.datetime "updated_at",                                                     null: false
+    t.string   "name",                               limit: 255
+    t.string   "tester",                             limit: 255
+    t.integer  "device",                             limit: 4
+    t.integer  "total_device_count",                 limit: 4
+    t.integer  "site_number",                        limit: 4
+    t.float    "basic_yield",                        limit: 24
+    t.integer  "cliff_number",                       limit: 4
+    t.float    "first_region_yield",                 limit: 24
+    t.float    "second_region_yield",                limit: 24
+    t.integer  "generate_mode",                      limit: 4
+    t.integer  "device_id",                          limit: 4
+    t.boolean  "site_difference_detected",           limit: 1,   default: false
+    t.boolean  "continuously_failure_detected",      limit: 1,   default: false
+    t.boolean  "time_variance_detected",             limit: 1,   default: false
+    t.boolean  "different_tester_variance_detected", limit: 1,   default: false
   end
 
-  add_index "lots", ["device_id"], name: "index_lots_on_device_id"
+  add_index "lots", ["device_id"], name: "index_lots_on_device_id", using: :btree
 
   create_table "sites", force: :cascade do |t|
-    t.integer  "site_serial"
-    t.boolean  "site_enable"
-    t.float    "site_yield"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "lot_id"
+    t.integer  "site_serial", limit: 4
+    t.boolean  "site_enable", limit: 1
+    t.float    "site_yield",  limit: 24
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "lot_id",      limit: 4
   end
 
-  add_index "sites", ["lot_id"], name: "index_sites_on_lot_id"
+  add_index "sites", ["lot_id"], name: "index_sites_on_lot_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "name"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "name",                   limit: 255
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "alerts", "lots"
+  add_foreign_key "data", "lots"
+  add_foreign_key "lots", "devices"
+  add_foreign_key "sites", "lots"
 end
